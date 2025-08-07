@@ -71,11 +71,43 @@
         opacity: 0;
       }
     }
+
+    /* Pantalla de bienvenida */
+    #pantallaBienvenida {
+      position: fixed;
+      top: 0; left: 0;
+    
+      background-color: #f8f7f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    #btnAbrir {
+      width: 150px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    #btnAbrir:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
 
-  <div class="container-fluid">
+  <!-- Pantalla de Bienvenida -->
+  <div id="pantallaBienvenida">
+
+    <img class="img-fluid w-100" src="fff.png" alt="Abrir invitación" id="btnAbrir" />
+
+  </div>
+
+  <!-- Contenido de la invitación (oculto al inicio) -->
+  <div class="container-fluid" id="contenidoInvitacion" style="display: none;">
+
     <!-- Imagen superior -->
     <div class="row">
       <div class="col">
@@ -109,35 +141,28 @@
       </div>
     </div>
 
-
-  <div class="row">
+    <div class="row">
       <div class="col">
         <img class="img-fluid" src="ccc.png" alt="Imagen inferior" />
       </div>
     </div>
 
-
-
     <!-- Botón Confirmo mi asistencia -->
-<div class="row my-5">
-  <div class="col text-center">
-    <a href="https://wa.me/593999263260?text=Hola,%20felicidades%20por%20su%20matrimonio..%20confirmo%20mi%20asistencia%20en%20este%20día%20tan%20especial" 
-       target="_blank" 
-       class="btn btn-success btn-sm px-5 py-2 rounded-pill shadow">
-      <i class="bi bi-whatsapp me-2"></i>Confirmo mi asistencia
-    </a>
-  </div>
-</div>
+    <div class="row my-5">
+      <div class="col text-center">
+        <a href="https://wa.me/593999263260?text=Hola,%20felicidades%20por%20su%20matrimonio..%20confirmo%20mi%20asistencia%20en%20este%20día%20tan%20especial" 
+           target="_blank" 
+           class="btn btn-success btn-sm px-5 py-2 rounded-pill shadow">
+          <i class="bi bi-whatsapp me-2"></i>Confirmo mi asistencia
+        </a>
+      </div>
+    </div>
 
-
- <div class="row">
+    <div class="row">
       <div class="col">
         <img class="img-fluid" src="dddd.png" alt="Imagen inferior" />
       </div>
     </div>
-
-
-
 
   </div>
 
@@ -172,13 +197,21 @@
   <!-- Bootstrap JS (para modal) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Reproductor JS -->
+  <!-- JS para Reproductor y Transición -->
   <script>
     const audio = document.getElementById('audioPlayer');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const icon = document.getElementById('icon');
+    const btnAbrir = document.getElementById('btnAbrir');
+    const pantallaBienvenida = document.getElementById('pantallaBienvenida');
+    const contenidoInvitacion = document.getElementById('contenidoInvitacion');
 
-    window.addEventListener('load', () => {
+    // Control del botón principal
+    btnAbrir.addEventListener('click', () => {
+      pantallaBienvenida.style.display = 'none';
+      contenidoInvitacion.style.display = 'block';
+
+      // Reproducir música al abrir
       audio.play().then(() => {
         icon.classList.remove('bi-play-fill');
         icon.classList.add('bi-pause-fill');
@@ -187,6 +220,7 @@
       });
     });
 
+    // Botón de play/pause
     playPauseBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
@@ -199,6 +233,7 @@
       }
     });
 
+    // Cuando termina la canción
     audio.addEventListener('ended', () => {
       icon.classList.remove('bi-pause-fill');
       icon.classList.add('bi-play-fill');
