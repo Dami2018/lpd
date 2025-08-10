@@ -2,15 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Reproductor de Música con Pétalos Flotantes</title>
+  <title>Invitación con Música y Corazón</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Bootstrap 5 CSS -->
+  <!-- Bootstrap CSS & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet" />
 
   <style>
@@ -18,33 +14,33 @@
       margin: 0; padding: 0;
       width: 100%; height: 100%;
       overflow-x: hidden;
-      /* fondo en wrapper */
+      background-color: #1a1a1a;
+      font-family: 'Cormorant Garamond', serif;
     }
 
-    /* Wrapper ocupa toda la pantalla con fondo oscuro en desktop */
+    /* Wrapper sin padding ni borde redondeado */
     #wrapper {
       min-height: 100vh;
-      background-color: #1a1a1a; /* fondo oscuro */
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      /* Quitamos padding y background para que tarjeta toque borde */
+      background-color: transparent;
     }
 
-    /* Caja contenido tipo móvil con scroll si es necesario */
     #contenidoInvitacionWrapper {
       width: 420px;
       max-width: 100%;
       background-color: #f8f7f2;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      border-radius: 12px;
-      overflow-y: auto; /* scroll vertical si contenido alto */
-      max-height: 100vh; /* no más alto que la ventana */
+      /* Quitamos border-radius */
+      border-radius: 0;
+      overflow-y: auto;
+      max-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    /* Pantalla bienvenida ocupa todo el alto para centrar */
     #pantallaBienvenida {
       width: 100%;
       min-height: 100vh;
@@ -54,92 +50,97 @@
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding: 0 15px; /* para que no toque los bordes en móvil */
     }
 
-    /* Reseteo paddings y margenes bootstrap */
-    .container-fluid, .row, .col {
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-
-    #playPauseBtn {
-      font-size: 3rem;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #333;
-      border-color: #333;
-      color: white;
-      cursor: pointer;
-    }
-
-    #playPauseBtn:hover {
-      background-color: #727272;
-      border-color: #555;
-    }
-
-    .btn-container {
-      display: flex;
-      justify-content: center;
-      margin: 1.5rem 0;
-    }
-
-    .petalo {
-      position: fixed;
-      top: -50px;
-      width: 30px;
-      height: 30px;
-      pointer-events: none;
-      animation-name: caer;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      opacity: 1;
-      user-select: none;
-      z-index: 999;
-    }
-
-    @keyframes caer {
-      0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateX(100px) translateY(100vh) rotate(360deg); opacity: 0; }
-    }
-
-    /* Animación pulso sobre */
     #btnAbrir {
       width: 150px;
-      height: auto;
       cursor: pointer;
       animation: pulso 1.5s infinite ease-in-out;
     }
-
     @keyframes pulso {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.08); }
     }
-
-    /* Texto manuscrito */
     #pantallaBienvenida p {
       margin-top: 1rem;
       color: #555;
-      font-family: 'Cormorant Garamond', serif;
       font-size: 16px;
       font-weight: 400;
     }
 
-    /* Modal tamaño centrado */
-    .modal-lg {
-      max-width: 800px;
+    /* Botón música con corazón */
+    #playPauseBtn {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      outline: none;
+    }
+    #playPauseBtn .heart {
+      font-size: 4rem;
+      color: #b0b0b0; /* gris suave */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s ease-in-out;
+    }
+    #playPauseBtn .icon {
+      font-size: 1.8rem;
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+    #playPauseBtn.playing .heart {
+      animation: latido 1s infinite ease-in-out;
+    }
+    @keyframes latido {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.15); }
     }
 
-    /* Móvil: quitar fondo oscuro y usar full screen */
+    /* Botones minimalistas corregidos */
+    .btn-minimal {
+      background-color: #e0e0e0;
+      border: none;
+      color: #333;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .btn-minimal:hover, .btn-minimal:focus {
+      background-color: #d6d6d6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-decoration: none;
+      outline: none;
+    }
+
+    /* Icono en botón ubicación */
+    .btn-minimal .bi {
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    /* Móvil */
     @media (max-width: 480px) {
       #wrapper {
         background-color: transparent;
         padding: 0;
       }
-
       #contenidoInvitacionWrapper {
         width: 100%;
         height: 100vh;
@@ -147,159 +148,177 @@
         box-shadow: none;
         overflow-y: auto;
       }
-
       #pantallaBienvenida {
         min-height: 100vh;
+        padding: 0 15px;
+      }
+
+      .col{
+        padding: 0px;
+        margin: 0px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div id="wrapper">
-    <div id="contenidoInvitacionWrapper">
+<div id="wrapper">
+  <div id="contenidoInvitacionWrapper">
 
-      <!-- Pantalla de Bienvenida -->
-      <div id="pantallaBienvenida">
-        <div class="text-center">
-          <img class="img-fluid" style="width: 60%;" src="sobre.png" alt="Abrir invitación" id="btnAbrir" />
-          <p>Toca el sobre para abrir tu invitación</p>
+    <!-- Pantalla de Bienvenida -->
+    <div id="pantallaBienvenida">
+      <div class="text-center">
+        <img class="img-fluid" src="/sobre.png" alt="Abrir invitación" id="btnAbrir" />
+        <p>Toca el sobre para abrir tu invitación</p>
+      </div>
+    </div>
+
+    <!-- Contenido de la invitación -->
+    <div class="container-fluid" id="contenidoInvitacion" style="display: none;">
+
+      <!-- Imagen superior -->
+      <div class="row">
+        <div class="col">
+          <img class="img-fluid" src="1.png" alt="Imagen superior" />
         </div>
       </div>
 
-      <!-- Contenido de la invitación (oculto al inicio) -->
-      <div class="container-fluid" id="contenidoInvitacion" style="display: none;">
-
-        <!-- Imagen superior -->
-        <div class="row">
-          <div class="col">
-            <img class="img-fluid" src="eee.png" alt="Imagen superior" />
-          </div>
+      <!-- Botón música -->
+      <div class="row">
+        <div class="col text-center">
+          <button id="playPauseBtn" aria-label="Reproducir / Pausar música">
+            <i class="bi bi-heart-fill heart"></i>
+            <i id="icon" class="bi bi-play-fill icon"></i>
+          </button>
+          <audio id="audioPlayer" src="musica.mp3"></audio>
         </div>
+      </div>
 
-        <!-- Botón Reproducir / Pausar -->
-        <div class="row">
-          <div class="col btn-container">
-            <button id="playPauseBtn" class="btn" aria-label="Reproducir / Pausar música">
-              <i id="icon" class="bi bi-play-fill"></i>
-            </button>
-            <audio id="audioPlayer" src="Ven Junto a Mi2.mp3"></audio>
-          </div>
+      <!-- Imagen central -->
+      <div class="row">
+        <div class="col">
+          <img class="img-fluid" src="2.png" alt="Imagen central" />
         </div>
+      </div>
 
-        <!-- Imagen inferior -->
-        <div class="row">
-          <div class="col">
-            <img class="img-fluid" src="bbb.png" alt="Imagen inferior" />
-          </div>
+        <!-- Imagen central -->
+      <div class="row">
+        <div class="col">
+          <img class="img-fluid" src="3.png" alt="Imagen central" />
         </div>
+      </div>
 
-        <!-- Botón Ver ubicación -->
-        <div class="row">
-          <div class="col text-center my-4">
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ubicacionModal">
-              Ver ubicación
-            </button>
-          </div>
+
+
+          <!-- Imagen central -->
+      <div class="row">
+        <div class="col">
+          <img class="img-fluid" src="4.png" alt="Imagen central" />
         </div>
+      </div>
 
-        <div class="row">
-          <div class="col">
-            <img class="img-fluid" src="ccc.png" alt="Imagen inferior" />
-          </div>
+      <!-- Botón ubicación -->
+      <div class="row">
+        <div class="col text-center my-4">
+          <button type="button" class="btn-minimal" data-bs-toggle="modal" data-bs-target="#ubicacionModal">
+            <i class="bi bi-geo-alt"></i> Ver ubicación
+          </button>
         </div>
+      </div>
 
-        <!-- Botón Confirmo mi asistencia -->
-        <div class="row my-5">
-          <div class="col text-center">
-            <a href="https://wa.me/593999263260?text=Hola,%20felicidades%20por%20su%20matrimonio..%20confirmo%20mi%20asistencia%20en%20este%20día%20tan%20especial" 
-               target="_blank" 
-               class="btn btn-success btn-sm px-5 py-2 rounded-pill shadow">
-              <i class="bi bi-whatsapp me-2"></i>Confirmo mi asistencia
-            </a>
-          </div>
+      <!-- Imagen intermedia -->
+      <div class="row">
+        <div class="col">
+          <img class="img-fluid" src="5.png" alt="Imagen intermedia" />
         </div>
+      </div>
 
-        <div class="row">
-          <div class="col">
-            <img class="img-fluid" src="dddd.png" alt="Imagen inferior" />
-          </div>
+
+       <!-- Imagen intermedia -->
+      <div class="row">
+        <div class="col">
+          <img class="img-fluid" src="6.png" alt="Imagen intermedia" />
         </div>
+      </div>
 
+      <!-- Botón confirmar asistencia -->
+      <div class="row my-5">
+        <div class="col text-center">
+          <a href="https://wa.me/593999263260?text=Hola,%20felicidades%20por%20su%20matrimonio.%20Confirmo%20mi%20asistencia%20en%20este%20día%20tan%20especial" 
+             target="_blank" 
+             class="btn-minimal">
+            <i class="bi bi-check2-circle"></i> Confirmo mi asistencia
+          </a>
+        </div>
+      </div>
+
+      <!-- Imagen inferior -->
+      <div class="row">
+        <div class="col">
+          <img class="img-fluid" src="7.png" alt="Imagen inferior" />
+        </div>
       </div>
 
     </div>
-  </div>
 
-  <!-- Modal de Ubicación -->
-  <div class="modal fade" id="ubicacionModal" tabindex="-1" aria-labelledby="ubicacionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ubicacionModalLabel">Ubicación del evento</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">
-          <div style="width: 100%; height: 400px;">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5635.2475380199285!2d-79.0052034241716!3d-2.8963191555929613!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd18119a49991d%3A0xd262273884827b4d!2sCatedral%20de%20la%20Inmaculada%20Concepci%C3%B3n!5e0!3m2!1sen!2sec!4v1754539398331!5m2!1sen!2sec"
-              width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-        </div>
+  </div>
+</div>
+
+<!-- Modal Ubicación -->
+<div class="modal fade" id="ubicacionModal" tabindex="-1" aria-labelledby="ubicacionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ubicacionModalLabel">Ubicación del evento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" style="height:400px;">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5635.2475380199285!2d-79.0052034241716!3d-2.8963191555929613!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91cd18119a49991d%3A0xd262273884827b4d!2sCatedral%20de%20la%20Inmaculada%20Concepci%C3%B3n!5e0!3m2!1sen!2sec!4v1754539398331!5m2!1sen!2sec" 
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Pétalos flotantes -->
-  <img src="petalo.png" class="petalo" style="left: 10%; animation-duration: 12s; animation-delay: 0s;" />
-  <img src="petalo.png" class="petalo" style="left: 30%; animation-duration: 15s; animation-delay: 2s;" />
-  <img src="petalo.png" class="petalo" style="left: 50%; animation-duration: 10s; animation-delay: 4s;" />
-  <img src="petalo.png" class="petalo" style="left: 70%; animation-duration: 18s; animation-delay: 1s;" />
-  <img src="petalo.png" class="petalo" style="left: 85%; animation-duration: 14s; animation-delay: 3s;" />
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- JS Play/Pausa -->
+<script>
+  const audio = document.getElementById('audioPlayer');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const icon = document.getElementById('icon');
+  const btnAbrir = document.getElementById('btnAbrir');
+  const pantallaBienvenida = document.getElementById('pantallaBienvenida');
+  const contenidoInvitacion = document.getElementById('contenidoInvitacion');
 
-  <!-- JS -->
-  <script>
-    const audio = document.getElementById('audioPlayer');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const icon = document.getElementById('icon');
-    const btnAbrir = document.getElementById('btnAbrir');
-    const pantallaBienvenida = document.getElementById('pantallaBienvenida');
-    const contenidoInvitacion = document.getElementById('contenidoInvitacion');
+  btnAbrir.addEventListener('click', () => {
+    pantallaBienvenida.style.display = 'none';
+    contenidoInvitacion.style.display = 'block';
+    audio.play().then(() => {
+      playPauseBtn.classList.add('playing');
+      icon.classList.replace('bi-play-fill', 'bi-pause-fill');
+    }).catch(e => console.log('Autoplay bloqueado:', e));
+  });
 
-    btnAbrir.addEventListener('click', () => {
-      pantallaBienvenida.style.display = 'none';
-      contenidoInvitacion.style.display = 'block';
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.classList.add('playing');
+      icon.classList.replace('bi-play-fill', 'bi-pause-fill');
+    } else {
+      audio.pause();
+      playPauseBtn.classList.remove('playing');
+      icon.classList.replace('bi-pause-fill', 'bi-play-fill');
+    }
+  });
 
-      audio.play().then(() => {
-        icon.classList.remove('bi-play-fill');
-        icon.classList.add('bi-pause-fill');
-      }).catch(e => {
-        console.log('Autoplay bloqueado:', e);
-      });
-    });
-
-    playPauseBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        icon.classList.remove('bi-play-fill');
-        icon.classList.add('bi-pause-fill');
-      } else {
-        audio.pause();
-        icon.classList.remove('bi-pause-fill');
-        icon.classList.add('bi-play-fill');
-      }
-    });
-
-    audio.addEventListener('ended', () => {
-      icon.classList.remove('bi-pause-fill');
-      icon.classList.add('bi-play-fill');
-    });
-  </script>
+  audio.addEventListener('ended', () => {
+    playPauseBtn.classList.remove('playing');
+    icon.classList.replace('bi-pause-fill', 'bi-play-fill');
+  });
+</script>
 
 </body>
 </html>
