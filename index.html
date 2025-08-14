@@ -214,14 +214,13 @@
       min-width: 65px;
     }
     .value {
-      
       font-size: clamp(42px, 12vw, 84px);
       font-weight: 300;
       line-height: 1;
       color: #333;
     }
     .label {
-      font-size: 13px;
+      font-size: 11px;
       letter-spacing: 0.2em;
       color: #a6a6a6;
       margin-top: 10px;
@@ -285,7 +284,7 @@
             <i class="bi bi-heart-fill heart"></i>
             <i id="icon" class="bi bi-play-fill icon"></i>
           </button>
-          <audio id="audioPlayer" src="music.mp3"></audio>
+          <audio id="audioPlayer" src="/music.mp3"></audio>
         </div>
       </div>
 
@@ -340,7 +339,7 @@
           <!-- Imagen central -->
       <div class="row">
         <div class="col">
-          <img class="img-fluid" src="4a.png" alt="Imagen central" />
+          <img class="img-fluid" src="/4a.png" alt="Imagen central" />
         </div>
       </div>
 
@@ -397,17 +396,55 @@
       </div>
 
 
-      
-      <!-- Botón confirmar asistencia -->
+
+
+
       <div class="row mt-3" style="margin-bottom: 50px;">
         <div class="col text-center">
-          <a href="https://wa.me/593999263260?text=Hola,%20felicidades%20por%20su%20matrimonio.%20Confirmo%20mi%20asistencia%20en%20este%20día%20tan%20especial" 
-             target="_blank" 
-             class="btn-minimal">
+          <button type="button" class="btn-minimal" data-bs-toggle="modal" data-bs-target="#confirmarModal">
             <i class="bi bi-check2-circle"></i> Confirmo mi asistencia
-          </a>
+          </button>
         </div>
       </div>
+
+
+
+      <!-- Modal Confirmar Asistencia -->
+<div class="modal fade" id="confirmarModal" tabindex="-1" aria-labelledby="confirmarModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmarModalLabel">Confirmar Asistencia</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formConfirmar" novalidate>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Tu nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre" required>
+            <div class="invalid-feedback">
+              Por favor ingresa un nombre válido (solo letras y espacios).
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="acompanantes" class="form-label">Cantidad de acompañantes (máx. 4)</label>
+            <input type="number" class="form-control" id="acompanantes" placeholder="0" min="0" max="4">
+            <div class="invalid-feedback">
+              Debe ser un número entre 0 y 4.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-minimal" id="btnEnviarWhatsapp">
+          Enviar a WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 
@@ -543,6 +580,54 @@
     tick();
     const timer = setInterval(tick, 1000);
   </script>
+
+<script>
+  document.getElementById('btnEnviarWhatsapp').addEventListener('click', function () {
+    const nombre = document.getElementById('nombre');
+    const acompanantes = document.getElementById('acompanantes');
+    let valido = true;
+
+    // Validar nombre
+    const nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre.value.trim());
+    if (!nombre.value.trim() || !nombreValido) {
+      nombre.classList.add('is-invalid');
+      valido = false;
+    } else {
+      nombre.classList.remove('is-invalid');
+    }
+
+    // Validar acompañantes
+    if (acompanantes.value.trim() !== '') {
+      const acompNum = parseInt(acompanantes.value.trim(), 10);
+      if (isNaN(acompNum) || acompNum < 0 || acompNum > 4) {
+        acompanantes.classList.add('is-invalid');
+        valido = false;
+      } else {
+        acompanantes.classList.remove('is-invalid');
+      }
+    } else {
+      acompanantes.classList.remove('is-invalid');
+    }
+
+    if (!valido) return;
+
+    // Construir mensaje
+    let mensaje = `Hola, felicidades por su matrimonio. Confirmo mi asistencia en este día tan especial. Mi nombre es ${nombre.value.trim()}`;
+    if (acompanantes.value.trim() && parseInt(acompanantes.value) > 0) {
+      mensaje += ` y asistiré con ${acompanantes.value} acompañante${acompanantes.value > 1 ? 's' : ''}`;
+    }else{
+      mensaje += ` y asistiré sin acompañantes`;
+    }
+
+    const url = `https://wa.me/5939992427701?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+
+    // Cerrar modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('confirmarModal'));
+    modal.hide();
+  });
+</script>
+
 
 </body>
 </html>
